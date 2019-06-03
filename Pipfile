@@ -7,6 +7,7 @@ url = "https://pypi.python.org/simple"
 
 [dev-packages]
 
+pylint = "*"
 
 
 [packages]
@@ -14,5 +15,8 @@ url = "https://pypi.python.org/simple"
 twilio = "*"
 flask = "*"
 flask-sqlalchemy = "*"
-flask-login = "*"
 gunicorn = "*"
+flask-security = "*"
+flask-migrate = "*"
+flask-wtf = "*"
+bcrypt = "*"

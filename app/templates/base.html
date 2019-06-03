@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='tachyons.min.css') }}">
+    <script type="text/javascript">
+    function hideMessage(messageSelector) {
+      let el = document.querySelector(messageSelector);
+      if (el) {
+        el.style.display = "none";
+      }
+    }
+    </script>
+  </head>
+  <body class="flex flex-column items-center">
+    <header class="flex flex-column items-center w-100">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div id="message-{{ loop.index }}"class="message message-{{ category }} mt2 br3 flex items-center">
+                <span>{{ message }}</span>
+                <span class="ml-auto f3 dim pointer" aria-label="Close"
+                      onclick="hideMessage('#message-{{ loop.index }}')">
+                  ×
+                </span>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </header>
+    <main>
+    {% block content %}
+    {% endblock %}
+    </main>
+  </body>
+</html>

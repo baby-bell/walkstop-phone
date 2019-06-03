@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+  <h1>Modify Existing Stories</h1>
+  {% if stories %}
+    <ul class="ph0 story-list">
+      {% for story in stories %}
+      <li class="mv4 mh2 flex justify-between">
+        <form method="POST"
+              action="{{ url_for('controllers.modify_story', number=story.number) }}"
+              class="flex items-center mr6">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <fieldset class="story-details mr4">
+            <legend>Story {{ story.number }}</legend>
+            <label for="story-{{ story.number }}-name" class="ml-auto">
+              Name
+            </label>
+            <input id="story-{{ story.number }}-name" name="name"
+                   class="story-details-field"
+                   type="text" pattern="^.*[^\s]+.*$"
+                   title="At least one non-whitespace character." required value="{{ story.name }}">
+            <label for="story-{{ story.number }}-prompt" class="ml-auto">
+              Prompt
+            </label>
+            <input id="story-{{ story.number }}-prompt" name="prompt"
+                   class="story-details-field"
+                   type="text" pattern="^.*[^\s]+.*$"
+                   title="At least one non-whitespace character." 
+                   size="30" required value="{{ story.prompt }}">
+          </fieldset>
+          <input type="submit" value="Save Changes">
+        </form>
+        <form method="POST" action="{{ url_for('controllers.delete_story', number=story.number) }}"
+              class="flex items-center">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="submit" value="Delete" class="bg-red white bn br2 ph3 pv2 grow pointer">
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are currently no stories available.</p>
+  {% endif %}
+</section>
+
+<section>
+  <h1>Create New Story</h1>
+  <form method="POST" action="{{ url_for('controllers.create_story') }}" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="story-details">
+      <label for="new-story-name" class="ml-auto">
+        Name
+      </label>
+      <input id="new-story-name" name="name" type="text" pattern="^.*[^\s]+.*$"
+             class="story-details-field"
+             title="At least one non-whitespace character." required>
+      <label for="new-story-prompt" class="ml-auto">
+        Prompt
+      </label>
+      <input id="new-story-prompt" name="prompt" type="text" pattern="^.*[^\s]+.*$"
+             class="story-details-field"
+             size="30"
+             title="At least one non-whitespace character." required>
+      <label for="new-story-number" class="ml-auto">
+        Number
+      </label>
+      <input id="new-story-number" name="number" type="number"
+             class="story-details-field"
+             required min="0">
+      <label for="new-story-audio" class="ml-auto">
+        Audio File (MP3 only)
+      </label>
+      <input id="new-story-audio" name="audio_file" type="file" accept="audio/mpeg" required>
+    </div>
+    <input type="submit" value="Create">
+  </form>
+</section>
+{% endblock %}
