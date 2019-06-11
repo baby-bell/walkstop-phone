@@ -3,7 +3,7 @@ from flask_migrate import Migrate
 from flask_wtf import CSRFProtect
 
 def create_app(test_config=None):
-    app = flask.Flask("walkstop-phone")
+    app = flask.Flask("src")
     if test_config is None:
         app.config.from_pyfile("config.py", silent=False)
     else:

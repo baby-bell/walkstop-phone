@@ -4,7 +4,7 @@ from twilio.twiml.voice_response import Gather, VoiceResponse
 from sqlalchemy.orm.exc import NoResultFound
 
 
-from .helpers import twiml, validate_twilio_request
+from .decorators import twiml, validate_twilio_request
 from .models import Story
 
 
