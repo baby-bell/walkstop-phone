@@ -1,3 +1,6 @@
+"""\
+Decorators for views that talk to the Twilio API.
+"""
 import flask
 from flask import request, abort
 from twilio.request_validator import RequestValidator
