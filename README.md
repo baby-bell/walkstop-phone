@@ -17,3 +17,4 @@ Connect the app to a database by setting up the `DATABASE_URL` environment varia
 
 ## Deployment
 A Dockerfile with the necessary dependencies is included.
+The app must be connected to a Postgres server, as specified in `DATABASE_URL`.
