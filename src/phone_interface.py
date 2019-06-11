@@ -9,9 +9,10 @@ from sqlalchemy.orm.exc import NoResultFound
 
 
 from .decorators import twiml, validate_twilio_request
-from .models import Story
+from .models import db,Story
 
 
+from datetime import datetime
 import logging
 from pathlib import Path
 
@@ -73,6 +74,9 @@ def get_story_audio(story_number):
     """
     try:
         story = Story.query.filter(Story.number == story_number).one()
+        story.num_listens += 1
+        story.last_accessed = datetime.utcnow()
+        db.session.commit()
     except NoResultFound:
         logging.warning("User requested nonexistent story number {}".format(story_number))
         return abort(404)
