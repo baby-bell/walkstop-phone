@@ -1,8 +1,7 @@
 """\
 Decorators for views that talk to the Twilio API.
 """
-import flask
-from flask import request, abort
+from flask import current_app, request, abort
 from twilio.request_validator import RequestValidator
 
 
@@ -30,7 +29,7 @@ def validate_twilio_request(view):
     """
     @wraps(view)
     def view_wrapper(*args, **kwargs):
-        validator = RequestValidator(flask.config["TWILIO_AUTH_TOKEN"])
+        validator = RequestValidator(current_app.config["TWILIO_AUTH_TOKEN"])
         
         request_valid = validator.validate(request.url,
                                            request.form,
