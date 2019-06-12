@@ -16,7 +16,7 @@ def twiml(view):
     """
     @wraps(view)
     def view_wrapper(*args, **kwargs):
-        response = flask.make_response(view(*args, **kwargs))
+        response = flask.make_response(str(view(*args, **kwargs)))
         response.headers["content-type"] = "text/xml"
         return response
 
