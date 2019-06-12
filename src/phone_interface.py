@@ -83,6 +83,7 @@ def get_story_audio(story_number):
     story_dir = Path(current_app.config["STORY_FILE_DIRECTORY"])
     try:
         story_file = open(story_dir/story.filename, "rb")
+        logging.info("User requested story {}".format(story_file))
         return send_file(story_file, mimetype="audio/mpeg")
     except OSError as e:
         logging.error("Could not retrieve file for story '{}'. \nException: {}".format(story.name,
