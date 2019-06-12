@@ -4,12 +4,13 @@ Webhooks for the Twilio API, used in the audio interface.
 
 from flask import abort, Blueprint, current_app, request, send_file, url_for
 import flask
+from flask_wtf import csrf
 from twilio.twiml.voice_response import Gather, VoiceResponse
 from sqlalchemy.orm.exc import NoResultFound
 
 
 from .decorators import twiml, validate_twilio_request
-from .models import db,Story
+from .models import db, Story
 
 
 from datetime import datetime
@@ -23,6 +24,7 @@ webhooks = Blueprint('twilio', __name__)
 @webhooks.route("/welcome", methods=["POST"])
 @validate_twilio_request
 @twiml
+@csrf.exempt
 def welcome():
     """Respond to incoming calls.
 
@@ -48,6 +50,7 @@ If you know which story you would like to hear, press the number now. If you are
 @webhooks.route("/play_story", methods=["POST"])
 @validate_twilio_request
 @twiml
+@csrf.exempt
 def play_story():
     """\
     Play a story for the user.
@@ -68,6 +71,7 @@ def play_story():
 
 @webhooks.route("/get_story_audio/<int:story_number>")
 @validate_twilio_request
+@csrf.exempt
 def get_story_audio(story_number):
     """\
     Fetch the audio file for a particular story.
@@ -94,6 +98,7 @@ def get_story_audio(story_number):
 @webhooks.route("/goodbye")
 @validate_twilio_request
 @twiml
+@csrf.exempt
 def goodbye():
     """\
     Thank the user and hang up the phone.
