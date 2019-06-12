@@ -34,7 +34,7 @@ def validate_twilio_request(view):
         request_valid = validator.validate(request.url,
                                            request.form,
                                            request.headers.get("X-TWILIO-SIGNATURE", ""))
-        if request.valid:
+        if request_valid:
             return view(*args, **kwargs)
         else:
             return abort(403)
