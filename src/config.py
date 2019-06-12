@@ -17,4 +17,4 @@ SECURITY_PASSWORD_SALT = os.environ.get("PASSWORD_SALT", "4ZjmX3/wiK4LuMXdAPNfEC
 
 # Story audio file configuration
 STORY_FILE_DIRECTORY = "story_files/"
-MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+MAX_CONTENT_LENGTH = 32 * 1024 * 1024
