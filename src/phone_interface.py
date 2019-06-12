@@ -3,7 +3,6 @@ Webhooks for the Twilio API, used in the audio interface.
 """
 
 from flask import abort, Blueprint, current_app, request, send_file, url_for
-import flask
 from twilio.twiml.voice_response import Gather, VoiceResponse
 from sqlalchemy.orm.exc import NoResultFound
 
