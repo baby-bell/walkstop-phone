@@ -60,7 +60,7 @@ def play_story():
         response.redirect(url_for("twilio.welcome"))
         return response
 
-    response.play(url_for("twilio.get_story_audio", story_number))
+    response.play(url_for("twilio.get_story_audio", story_number=story_number))
     response.redirect(url_for("twilio.goodbye"))
     return response
 
