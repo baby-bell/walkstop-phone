@@ -28,7 +28,7 @@ def welcome():
     Prompts for a story number.
     """
     response = VoiceResponse()
-    with response.gather(action=url_for("play_story"), method="POST") as g:
+    with response.gather(action=url_for("twilio.play_story"), method="POST") as g:
         g.say(message="""
 Welcome to WalkStops Haight and Fillmore Oral History Corner. 
 
@@ -39,7 +39,7 @@ If you know which story you would like to hear, press the number now. If you are
         for story in all_stories:
             g.say("To hear {}, press {}".format(story.prompt, story.number))
 
-    response.redirect(url_for("goodbye"))
+    response.redirect(url_for("twilio.goodbye"))
     return response
 
 
@@ -57,11 +57,11 @@ def play_story():
         Story.query.filter(Story.number == story_number).one()
     except NoResultFound:
         response.say("I could not find story number {}. Please try another number.".format(request.form["Digits"]))
-        response.redirect(url_for("welcome"))
+        response.redirect(url_for("twilio.welcome"))
         return response
 
-    response.play(url_for("get_story_audio", story_number))
-    response.redirect(url_for("goodbye"))
+    response.play(url_for("twilio.get_story_audio", story_number))
+    response.redirect(url_for("twilio.goodbye"))
     return response
 
 
