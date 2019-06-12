@@ -13,6 +13,7 @@ def create_app(test_config=None):
     from .views import views
     from .controllers import controllers
     from .phone_interface import webhooks
+    csrf.exempt(webhooks)
     app.register_blueprint(views)
     app.register_blueprint(controllers, url_prefix="/api")
     app.register_blueprint(webhooks, url_prefix="/voice")
