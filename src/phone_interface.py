@@ -65,7 +65,7 @@ def play_story():
     return response
 
 
-@webhooks.route("/get_story_audio/<int:story_number>")
+@webhooks.route("/get_story_audio/<int:story_number>.mp3")
 @validate_twilio_request
 def get_story_audio(story_number):
     """\
