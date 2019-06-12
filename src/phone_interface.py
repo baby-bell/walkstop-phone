@@ -90,7 +90,7 @@ def get_story_audio(story_number):
         return abort(500)
 
 
-@webhooks.route("/goodbye")
+@webhooks.route("/goodbye", methods=["POST"])
 @validate_twilio_request
 @twiml
 def goodbye():
