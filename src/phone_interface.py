@@ -23,25 +23,37 @@ webhooks = Blueprint('twilio', __name__)
 @validate_twilio_request
 @twiml
 def welcome():
-    """Respond to incoming calls.
-
-    Prompts for a story number.
+    """\
+    Tell user how to use this system.
     """
     response = VoiceResponse()
-    with response.gather(action=url_for("twilio.play_story"), method="POST") as g:
-        g.say(message="""
+    response.say(message="""
 Welcome to WalkStops Haight and Fillmore Oral History Corner. 
 
 If you know which story you would like to hear, press the number now. If you are not sure, please listen to the different oral histories and make your choice at any time by pressing the number that corresponds to the story.
 """)
+    response.redirect(url_for("twilio.story_menu"))
+    return response
+
+
+@webhooks.route("/story_menu", methods=["POST"])
+@validate_twilio_request
+@twiml
+def story_menu():
+    """\
+    Ask user which story they would like.
+    """
+    response = VoiceResponse()
+    with response.gather(action=url_for("twilio.play_story"), method="POST") as g:
         g.pause()
         all_stories = Story.query.order_by(Story.number).all()
         for story in all_stories:
             g.say("To hear {}, press {}".format(story.prompt, story.number))
 
+        g.pause()
+
     response.redirect(url_for("twilio.goodbye"))
     return response
-
 
 
 @webhooks.route("/play_story", methods=["POST"])
@@ -57,11 +69,31 @@ def play_story():
         Story.query.filter(Story.number == story_number).one()
     except NoResultFound:
         response.say("I could not find story number {}. Please try another number.".format(request.form["Digits"]))
-        response.redirect(url_for("twilio.welcome"))
+        response.redirect(url_for("twilio.story_menu"))
         return response
 
     response.play(url_for("twilio.get_story_audio", story_number=story_number))
+
+    with response.gather(action=url_for("twilio.maybe_play_another_story"), method="POST") as g:
+        g.pause()
     response.redirect(url_for("twilio.goodbye"))
+    return response
+
+
+@webhooks.route("/maybe_play_another_story", methods=["POST"])
+@validate_twilio_request
+@twiml
+def maybe_play_another_story():
+    """\
+    If user has asked for another story, redirect to main menu, else quit.
+    """
+    response = VoiceResponse()
+
+    if request.form["Digits"] == "#":
+        response.redirect(url_for("twilio.story_menu"))
+    else:
+        response.redirect(url_for("twilio.goodbye"))
+
     return response
 
 
