@@ -75,6 +75,7 @@ def play_story():
     response.play(url_for("twilio.get_story_audio", story_number=story_number))
 
     with response.gather(action=url_for("twilio.maybe_play_another_story"), method="POST") as g:
+        g.say("Press the pound key to return to the main menu")
         g.pause()
     response.redirect(url_for("twilio.goodbye"))
     return response
