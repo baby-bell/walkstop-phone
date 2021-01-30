@@ -16,6 +16,10 @@ import logging
 from pathlib import Path
 
 
+# How long story audio will be cached on Twilio's servers, in seconds
+STORY_AUDIO_CACHE_TIMEOUT_SECS = 60 * 30
+
+
 webhooks = Blueprint('twilio', __name__)
 
 
@@ -128,7 +132,7 @@ def get_story_audio(story_number):
     try:
         story_file = open(story_dir/story.filename, "rb")
         logging.info("User requested story {}".format(story_file))
-        return send_file(story_file, mimetype="audio/mpeg")
+        return send_file(story_file, mimetype="audio/mpeg", cache_timeout=STORY_AUDIO_CACHE_TIMEOUT_SECS)
     except OSError as e:
         logging.error("Could not retrieve file for story '{}'. \nException: {}".format(story.name,
                                                                                        e))
